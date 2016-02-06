@@ -24,6 +24,19 @@ class TwitterClient: BDBOAuth1SessionManager {
         return Static.instance
     }
     
+    func homeTimelineWithParams(params: NSDictionary?, completion: (tweets: [Tweet]?, error: NSError?) -> ()) {
+        TwitterClient.sharedInstance.GET("1.1/statuses/home_timeline.json", parameters: params, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
+            print("home timeline: \(response)")
+            var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
+            
+            completion(tweets: tweets, error: nil)
+            
+            }, failure: { (operation: NSURLSessionDataTask?, error: NSError) -> Void in
+                print("error getting home timeline")
+                completion(tweets: nil, error: error)
+        })
+    }
+    
     func loginWithCompletion(completion: (user: User?, error: NSError?) -> ()) {
         loginCompletion = completion
         
@@ -47,23 +60,12 @@ class TwitterClient: BDBOAuth1SessionManager {
             TwitterClient.sharedInstance.GET("1.1/account/verify_credentials.json", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
                 //print("user: \(response)")
                 var user = User(dictionary: response as! NSDictionary)
+                User.currentUser = user
                 print("user: \(user.name)")
                 self.loginCompletion?(user: user, error: nil)
                 }, failure: { (operation: NSURLSessionDataTask?, error: NSError) -> Void in
                     print("error getting current user")
                     self.loginCompletion?(user: nil, error: error)
-            })
-            
-            TwitterClient.sharedInstance.GET("1.1/statuses/home_timeline.json", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
-                //print("home timeline: \(response)")
-                var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
-                
-                for tweet in tweets {
-                    print("text: \(tweet.text), created: \(tweet.createdAt)")
-                }
-                
-                }, failure: { (operation: NSURLSessionDataTask?, error: NSError) -> Void in
-                    print("error getting home timeline")
             })
             
             }) { (error: NSError!) -> Void in
