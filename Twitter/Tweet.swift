@@ -13,11 +13,17 @@ class Tweet: NSObject {
     var text: String?
     var createdAtString: String?
     var createdAt: NSDate?
+    var favCount: Int?
+    var retweetCount: Int?
+    var tweetId: String?
     
     init(dictionary: NSDictionary) {
         user = User(dictionary: dictionary["user"] as! NSDictionary)
         text = dictionary["text"] as? String
         createdAtString = dictionary["created_at"] as? String
+        favCount = dictionary["favorite_count"] as? Int
+        retweetCount = dictionary["retweet_count"] as? Int
+        tweetId = dictionary["id_str"] as? String
         
         var formatter = NSDateFormatter()
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
@@ -33,4 +39,5 @@ class Tweet: NSObject {
         }
         return tweets
     }
+    
 }

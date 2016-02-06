@@ -26,7 +26,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     func homeTimelineWithParams(params: NSDictionary?, completion: (tweets: [Tweet]?, error: NSError?) -> ()) {
         TwitterClient.sharedInstance.GET("1.1/statuses/home_timeline.json", parameters: params, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
-            print("home timeline: \(response)")
+            //print("home timeline: \(response)")
             var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             
             completion(tweets: tweets, error: nil)
@@ -72,6 +72,23 @@ class TwitterClient: BDBOAuth1SessionManager {
                 print("Failed to receive access token")
                 self.loginCompletion?(user: nil, error: error)
         }
-
+    }
+    
+    func retweet(tweetId: String) {
+        
+        TwitterClient.sharedInstance.POST("1.1/statuses/retweet/\(tweetId).json", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
+            print("successful retweet")
+            }) { (opreation: NSURLSessionDataTask?, error: NSError) -> Void in
+                print("can't retweet")
+        }
+    }
+    
+    func favorite(tweetId: String) {
+        
+        TwitterClient.sharedInstance.POST("1.1/favorites/create.json?id=\(tweetId)", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
+            print("successful fav")
+            }) { (opreation: NSURLSessionDataTask?, error: NSError) -> Void in
+                print("can't fav")
+        }
     }
 }
