@@ -9,11 +9,15 @@
 import UIKit
 
 class UserProfileViewController: UIViewController {
+    
+    @IBOutlet weak var nameLabel: UILabel!
+    var user: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        //nameLabel.text = user!.name
     }
 
     override func didReceiveMemoryWarning() {

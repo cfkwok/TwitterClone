@@ -96,9 +96,20 @@ class TwitterClient: BDBOAuth1SessionManager {
         var escapedText = text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         TwitterClient.sharedInstance.POST("1.1/statuses/update.json?status=\(escapedText!)", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
             print("successful reply")
-            }) { (opreation: NSURLSessionDataTask?, error: NSError) -> Void in
+            }) { (operation: NSURLSessionDataTask?, error: NSError) -> Void in
                 print("can't reply")
         }
 
+    }
+    
+    func getProfile(screenName: String!) {
+        TwitterClient.sharedInstance.GET("1.1/users/show.json?screen_name=\(screenName!)", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
+            print("Successfully got user")
+            print("\(response)")
+            
+            }) { (operation: NSURLSessionDataTask?, error: NSError) -> Void in
+                print("Can't get user")
+        }
+        
     }
 }
