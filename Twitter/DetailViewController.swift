@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DetailViewController: UIViewController {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var screenNameLabel: UILabel!
@@ -19,16 +20,12 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var likeLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-    
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var replyTextField: UITextField!
     
     var tweet: Tweet!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
 
         print(tweet)
         nameLabel.text = tweet.user?.name
@@ -59,44 +56,19 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func onBack(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+
+    @IBAction func onReply(sender: AnyObject) {
+        TwitterClient.sharedInstance.reply(replyTextField.text!)
+        replyTextField.text = ""
     }
- 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetCell
+
+    @IBAction func onRetweet(sender: AnyObject) {
+        TwitterClient.sharedInstance.retweet(tweet.tweetId!)
         
-        /*
-        let tweet = tweets![indexPath.row]
-        cell.nameLabel.text = tweet.user!.name
-        cell.atNameLabel.text = "@" + tweet.user!.screenname!
-        cell.avatarImageView.setImageWithURL(NSURL(string: tweet.user!.profileImageUrl!)!)
-        cell.messageLabel.text = tweet.text
-        cell.favCtLabel.text = String(tweet.favCount!)
-        cell.retweetCtLabel.text = String(tweet.retweetCount!)
-        cell.tweetIdSpec = tweet.tweetId
-        let elapsedTime = NSDate().timeIntervalSinceDate(tweet.createdAt!)
-        let duration = Int(elapsedTime)
-        var finalTime = "0"
-        
-        if duration / (360 * 24) >= 1 {
-            finalTime = String(duration / (360 * 24)) + "d"
-        }
-        else if duration / 360 >= 1 {
-            finalTime = String(duration / 360) + "h"
-            
-        }
-        else if duration / 60 >= 1 {
-            finalTime = String(duration / 60) + "min"
-        }
-        else {
-            finalTime = String(duration) + "s"
-        }
-        
-        cell.timeLabel.text = String(finalTime)
-        */
-        return cell
+    }
+    
+    @IBAction func onFavorite(sender: AnyObject) {
+        TwitterClient.sharedInstance.favorite(tweet.tweetId!)
     }
 
     /*

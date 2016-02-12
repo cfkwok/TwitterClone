@@ -26,7 +26,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     func homeTimelineWithParams(params: NSDictionary?, completion: (tweets: [Tweet]?, error: NSError?) -> ()) {
         TwitterClient.sharedInstance.GET("1.1/statuses/home_timeline.json", parameters: params, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
-            print("home timeline: \(response)")
+            //print("home timeline: \(response)")
             var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             
             completion(tweets: tweets, error: nil)
@@ -90,5 +90,15 @@ class TwitterClient: BDBOAuth1SessionManager {
             }) { (opreation: NSURLSessionDataTask?, error: NSError) -> Void in
                 print("can't fav")
         }
+    }
+    
+    func reply(text: String) {
+        var escapedText = text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        TwitterClient.sharedInstance.POST("1.1/statuses/update.json?status=\(escapedText!)", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
+            print("successful reply")
+            }) { (opreation: NSURLSessionDataTask?, error: NSError) -> Void in
+                print("can't reply")
+        }
+
     }
 }
