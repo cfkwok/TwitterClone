@@ -27,7 +27,12 @@ class TweetCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
+        /*
+        var imageView = avatarImageView
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        */
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -43,4 +48,12 @@ class TweetCell: UITableViewCell {
     @IBAction func onFavorite(sender: AnyObject) {
         TwitterClient.sharedInstance.favorite(tweetIdSpec!)
     }
+    
+    /*
+    func imageTapped(img: AnyObject) {
+        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let tweetView: TweetsViewController = storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as! TweetsViewController
+        tweetView.performSegueWithIdentifier("UserProfileViewController", sender: nil)
+    }
+*/
 }

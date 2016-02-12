@@ -10,6 +10,7 @@ import UIKit
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    
     var tweets: [Tweet]?
 
     @IBOutlet weak var tableView: UITableView!
@@ -26,6 +27,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             self.tweets = tweets
             self.tableView.reloadData()
         }
+        
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,6 +80,12 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
         cell.timeLabel.text = String(finalTime)
         
+        
+        var imageView = cell.avatarImageView
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        
         return cell
     }
 
@@ -88,12 +99,24 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "UserProfileViewController" {
+            
+        }
+        
+        else {
         let cell = sender as! UITableViewCell
         let indexPath = tableView.indexPathForCell(cell)
         let tweet = tweets![indexPath!.row]
         
         let detailViewController = segue.destinationViewController as! DetailViewController
         detailViewController.tweet = tweet
+        }
+    }
+    
+    func imageTapped(img: AnyObject) {
+        //let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        //let tweetView: TweetsViewController = storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as! TweetsViewController
+        self.performSegueWithIdentifier("UserProfileViewController", sender: self)
     }
 
 

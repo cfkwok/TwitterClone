@@ -177,11 +177,30 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="CKv-2q-Be9" id="OkH-jT-eKN"/>
+                        <segue destination="4lP-DG-21t" kind="modal" identifier="UserProfileViewController" id="k9g-I8-4wN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uan-OE-hWD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="535" y="274"/>
+        </scene>
+        <!--User Profile View Controller-->
+        <scene sceneID="LC7-tP-dVo">
+            <objects>
+                <viewController storyboardIdentifier="UserProfileViewController" id="4lP-DG-21t" customClass="UserProfileViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ten-M6-I3t"/>
+                        <viewControllerLayoutGuide type="bottom" id="YvA-Fh-K0b"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wPR-DE-iss">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qhj-Il-Psz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="535" y="921"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="0jF-Nv-piO">
