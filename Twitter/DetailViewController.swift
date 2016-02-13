@@ -27,7 +27,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print(tweet)
         nameLabel.text = tweet.user?.name
         screenNameLabel.text = tweet.user?.screenname
         descLabel.text = tweet.text
@@ -58,7 +57,7 @@ class DetailViewController: UIViewController {
     }
 
     @IBAction func onReply(sender: AnyObject) {
-        TwitterClient.sharedInstance.reply(replyTextField.text!)
+        TwitterClient.sharedInstance.reply(replyTextField.text!, statusId: tweet.tweetId!)
         replyTextField.text = ""
     }
 

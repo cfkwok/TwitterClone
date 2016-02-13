@@ -58,7 +58,7 @@ class TwitterClient: BDBOAuth1SessionManager {
             TwitterClient.sharedInstance.requestSerializer.saveAccessToken(accessToken)
             
             TwitterClient.sharedInstance.GET("1.1/account/verify_credentials.json", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
-                //print("user: \(response)")
+                print("user: \(response)")
                 var user = User(dictionary: response as! NSDictionary)
                 User.currentUser = user
                 print("user: \(user.name)")
@@ -92,9 +92,10 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
-    func reply(text: String) {
+    func reply(text: String, statusId: String) {
         var escapedText = text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-        TwitterClient.sharedInstance.POST("1.1/statuses/update.json?status=\(escapedText!)", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
+        print("1.1/statuses/update.json?status=\(escapedText!)?in_reply_to_status_id=\(statusId)")
+        TwitterClient.sharedInstance.POST("1.1/statuses/update.json?status=\(escapedText!)&in_reply_to_status_id=\(statusId)", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
             print("successful reply")
             }) { (opreation: NSURLSessionDataTask?, error: NSError) -> Void in
                 print("can't reply")
