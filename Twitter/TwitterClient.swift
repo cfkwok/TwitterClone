@@ -113,4 +113,16 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
         
     }
+    
+    func makeTweet(text: String) {
+        var escapedText = text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+
+        TwitterClient.sharedInstance.POST("1.1/statuses/update.json?status=\(escapedText!)", parameters: nil, success: { (operation: NSURLSessionDataTask, response: AnyObject?) -> Void in
+            print("successful tweet")
+            }) { (operation: NSURLSessionDataTask?, error: NSError) -> Void in
+                print("can't tweet")
+        }
+        
+    }
+
 }

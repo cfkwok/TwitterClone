@@ -14,6 +14,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     var tweets: [Tweet]?
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tweetTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +29,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             self.tweets = tweets
             self.tableView.reloadData()
         }
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasShown:"), name:UIKeyboardWillShowNotification, object: nil);
+    
         
         
         
@@ -97,53 +101,46 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
         if segue.identifier == "UserProfileViewController" {
-            /*
-            let cell = sender as! UITableViewCell
-            let indexPath = tableView.indexPathForCell(cell)
-            let tweet = tweets![indexPath!.row]
-            
+            let tweet = sender as! Tweet
             let userProfileViewController = segue.destinationViewController as! UserProfileViewController
             userProfileViewController.user = tweet.user
-*/
         }
-            
         else if sender is UIButton {
             
         }
-        
         else {
-        let cell = sender as! UITableViewCell
-        let indexPath = tableView.indexPathForCell(cell)
-        let tweet = tweets![indexPath!.row]
-        
-        let detailViewController = segue.destinationViewController as! DetailViewController
-        detailViewController.tweet = tweet
+            let cell = sender as! UITableViewCell
+            let indexPath = tableView.indexPathForCell(cell)
+            let tweet = tweets![indexPath!.row]
+            let detailViewController = segue.destinationViewController as! DetailViewController
+            detailViewController.tweet = tweet
         }
     }
     
     func imageTapped(sender: UITapGestureRecognizer) {
-        //let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-        //let tweetView: TweetsViewController = storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as! TweetsViewController
-        
-        //using sender, we can get the point in respect to the table view
         let tapLocation = sender.locationInView(self.tableView)
-        
-        //using the tapLocation, we retrieve the corresponding indexPath
         let indexPath = self.tableView.indexPathForRowAtPoint(tapLocation)
+        let tweet = tweets![indexPath!.row]
         
-        //finally, we print out the value
-        print(indexPath)
+        self.performSegueWithIdentifier("UserProfileViewController", sender: tweet)
+    }
+
+    /*
+    func keyboardWasShown(notification: NSNotification) {
+        var info = notification.userInfo!
+        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
-        //we could even get the cell from the index, too
-        let cell = self.tableView.cellForRowAtIndexPath(indexPath!)
-        
-        //cell.textLabel?.text = "Hello, Cell!"
-        
-        self.performSegueWithIdentifier("UserProfileViewController", sender: nil)
-        // tweeterProfile
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.bottomConstraint.constant = keyboardFrame.size.height + 40
+        })
+    }
+*/
+    
+    @IBAction func onTweet(sender: AnyObject) {
+        TwitterClient.sharedInstance.makeTweet(tweetTextField.text!)
+        tweetTextField.text = ""
+
     }
 
 
