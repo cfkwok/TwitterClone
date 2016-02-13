@@ -78,11 +78,8 @@
 			children = (
 				6B2A79C31C62E66F00897982 /* TweetsViewController.swift */,
 				6B036D8D1C6AE0A20062F3D9 /* DetailViewController.swift */,
-<<<<<<< HEAD
 				6B036D8F1C6D96830062F3D9 /* MyProfileViewController.swift */,
-=======
 				6BEF94071C6E272F0077B511 /* UserProfileViewController.swift */,
->>>>>>> tweeterProfile
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
