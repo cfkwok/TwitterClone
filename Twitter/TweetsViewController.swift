@@ -10,6 +10,7 @@ import UIKit
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    
     var tweets: [Tweet]?
 
     @IBOutlet weak var tableView: UITableView!
@@ -26,6 +27,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             self.tweets = tweets
             self.tableView.reloadData()
         }
+        
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,6 +80,12 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
         cell.timeLabel.text = String(finalTime)
         
+        
+        var imageView = cell.avatarImageView
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        
         return cell
     }
 
@@ -88,17 +99,51 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if sender is UIButton {
-            
-        }
-        else {
+        if segue.identifier == "UserProfileViewController" {
+            /*
             let cell = sender as! UITableViewCell
             let indexPath = tableView.indexPathForCell(cell)
             let tweet = tweets![indexPath!.row]
-        
-            let detailViewController = segue.destinationViewController as! DetailViewController
-            detailViewController.tweet = tweet
+            
+            let userProfileViewController = segue.destinationViewController as! UserProfileViewController
+            userProfileViewController.user = tweet.user
+*/
         }
+            
+        else if sender is UIButton {
+            
+        }
+        
+        else {
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPathForCell(cell)
+        let tweet = tweets![indexPath!.row]
+        
+        let detailViewController = segue.destinationViewController as! DetailViewController
+        detailViewController.tweet = tweet
+        }
+    }
+    
+    func imageTapped(sender: UITapGestureRecognizer) {
+        //let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        //let tweetView: TweetsViewController = storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as! TweetsViewController
+        
+        //using sender, we can get the point in respect to the table view
+        let tapLocation = sender.locationInView(self.tableView)
+        
+        //using the tapLocation, we retrieve the corresponding indexPath
+        let indexPath = self.tableView.indexPathForRowAtPoint(tapLocation)
+        
+        //finally, we print out the value
+        print(indexPath)
+        
+        //we could even get the cell from the index, too
+        let cell = self.tableView.cellForRowAtIndexPath(indexPath!)
+        
+        //cell.textLabel?.text = "Hello, Cell!"
+        
+        self.performSegueWithIdentifier("UserProfileViewController", sender: nil)
+        // tweeterProfile
     }
 
 
